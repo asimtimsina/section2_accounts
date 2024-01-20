@@ -40,8 +40,7 @@ public class AccountsService implements  IAccountsService{
                     + customer.getMobileNumber());
         }
 
-        customer.setCreatedBy("Tester");
-        customer.setCreatedAt(LocalDateTime.now());
+
 
         customerRepo.save(customer);
         accountsRepo.save(createNewAccount(customer));
@@ -58,8 +57,7 @@ public class AccountsService implements  IAccountsService{
         newAccount.setCustomerId(customer.getCustomerId());
         long randomAccNumber = 1000000000L + new Random().nextInt(900000000);
 
-        newAccount.setCreatedBy("Tester");
-        newAccount.setCreatedAt(LocalDateTime.now());
+
 
 
         newAccount.setAccountNumber(randomAccNumber);
