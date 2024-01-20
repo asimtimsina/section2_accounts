@@ -3,6 +3,7 @@ package com.asimo.accounts.controller;
 import com.asimo.accounts.constants.AccountConstants;
 import com.asimo.accounts.dto.CustomerDto;
 import com.asimo.accounts.dto.ResponseDto;
+import com.asimo.accounts.entity.Customer;
 import com.asimo.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,12 @@ public class AccountsController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(AccountConstants.STATUS_201, AccountConstants.MESSAGE_201));
+    }
+
+    @GetMapping("/fetch")
+    public ResponseEntity<CustomerDto> fetchAccount(@RequestParam String mobileNum){
+        CustomerDto customerDto = accountsService.fetchAccount(mobileNum);
+        return ResponseEntity.status(HttpStatus.OK).body(customerDto);
     }
 
 }

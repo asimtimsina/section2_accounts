@@ -18,4 +18,12 @@ public interface IAccountsService {
      * @return the new account details
      */
     Accounts createNewAccount(Customer customer);
+
+
+    /**
+     *
+     * @param mobileNum - Mobile Number
+     * @return Customer Details related with the mobile Number
+     */
+    CustomerDto fetchAccount(String mobileNum);
 }

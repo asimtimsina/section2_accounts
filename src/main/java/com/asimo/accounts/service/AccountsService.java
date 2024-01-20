@@ -1,10 +1,13 @@
 package com.asimo.accounts.service;
 
 import com.asimo.accounts.constants.AccountConstants;
+import com.asimo.accounts.dto.AccountsDto;
 import com.asimo.accounts.dto.CustomerDto;
 import com.asimo.accounts.entity.Accounts;
 import com.asimo.accounts.entity.Customer;
 import com.asimo.accounts.exception.CustomerAlreadyExistsException;
+import com.asimo.accounts.exception.ResourceNotFoundException;
+import com.asimo.accounts.mapper.AccountsMapper;
 import com.asimo.accounts.mapper.CustomerMapper;
 import com.asimo.accounts.repository.AccountsRepo;
 import com.asimo.accounts.repository.CustomerRepo;
@@ -63,6 +66,29 @@ public class AccountsService implements  IAccountsService{
         newAccount.setAccountType(AccountConstants.SAVINGS);
         newAccount.setBranchAddress(AccountConstants.ADDRESS);
         return newAccount;
+    }
+
+    /**
+     *
+     * @param mobileNum - Mobile Number
+     * @return Customer Details related with the mobile Number
+     */
+    @Override
+    public CustomerDto fetchAccount(String mobileNum) {
+       Customer customer =  customerRepo.findByMobileNumber(mobileNum).orElseThrow(
+               ()-> new ResourceNotFoundException("Customer", "mobileNumber", mobileNum)
+       );
+
+        Accounts accounts =  accountsRepo.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                ()-> new ResourceNotFoundException("Accounts", "mobileNumber", mobileNum)
+        );
+
+        //first set all the fields
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        //set AccountsDto inside the customerDto
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
+
+        return customerDto;
     }
 
 
