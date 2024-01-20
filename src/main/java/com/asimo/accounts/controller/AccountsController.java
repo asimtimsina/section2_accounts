@@ -5,22 +5,25 @@ import com.asimo.accounts.dto.CustomerDto;
 import com.asimo.accounts.dto.ResponseDto;
 import com.asimo.accounts.entity.Customer;
 import com.asimo.accounts.service.IAccountsService;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
+@Validated
 public class AccountsController {
 
     private IAccountsService accountsService;
 
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto){
+    public ResponseEntity<ResponseDto> createAccount(@Validated @RequestBody CustomerDto customerDto){
 
         accountsService.createAccount(customerDto);
 
@@ -30,13 +33,15 @@ public class AccountsController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<CustomerDto> fetchAccount(@RequestParam String mobileNum){
+    public ResponseEntity<CustomerDto> fetchAccount(@RequestParam
+                                                        @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
+                                                        String mobileNum){
         CustomerDto customerDto = accountsService.fetchAccount(mobileNum);
         return ResponseEntity.status(HttpStatus.OK).body(customerDto);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateAccount(@RequestBody CustomerDto customerDto) {
+    public ResponseEntity<ResponseDto> updateAccount(@Validated @RequestBody CustomerDto customerDto) {
 
         boolean isUpdated = accountsService.updateAccount(customerDto);
 
@@ -51,7 +56,9 @@ public class AccountsController {
     }
 
     @DeleteMapping ("/delete")
-    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam String mobileNum) {
+    public ResponseEntity<ResponseDto> deleteAccount(@RequestParam
+                                                         @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile Number must be 10 digits")
+                                                         String mobileNum) {
         boolean isDeleted = accountsService.deleteAccount(mobileNum);
 
         if (isDeleted) {
