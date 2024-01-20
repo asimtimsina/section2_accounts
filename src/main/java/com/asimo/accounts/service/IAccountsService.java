@@ -34,4 +34,11 @@ public interface IAccountsService {
      * @return returns if update is sucessfull
      */
     boolean updateAccount(CustomerDto customerDto);
+
+    /**
+     *
+     * @param mobileNum - Mobile Number
+     * @return returns if account deletion is successful or not
+     */
+    boolean deleteAccount(String mobileNum);
 }
