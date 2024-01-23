@@ -106,7 +106,7 @@ public class AccountsController {
         }
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ResponseDto(AccountConstants.STATUS_500, AccountConstants.MESSAGE_500));
+                .body(new ResponseDto(AccountConstants.STATUS_417, AccountConstants.MESSAGE_417_UPDATE));
     }
 
     @Operation(
@@ -142,7 +142,7 @@ public class AccountsController {
         }
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ResponseDto(AccountConstants.STATUS_500, AccountConstants.MESSAGE_500));
+                .body(new ResponseDto(AccountConstants.STATUS_417, AccountConstants.MESSAGE_417_DELETE));
     }
 
 
